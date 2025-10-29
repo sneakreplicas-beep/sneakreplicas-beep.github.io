@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HR Clothing Store</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, black, #111, #333);
+    color: white;
+  }
+  header {
+    text-align: center;
+    background: black;
+    padding: 20px 0 0 0;
+  }
+  header h1 {
+    font-size: 64px;
+    font-weight: 900;
+    margin: 0;
+    color: white;
+  }
+  .banner {
+    background: yellow;
+    color: black;
+    font-weight: bold;
+    padding: 10px;
+  }
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  .product {
+    background: black;
+    border: 2px solid white;
+    border-radius: 16px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+  .product:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px white;
+  }
+  .product-img {
+    height: 200px;
+    background: linear-gradient(135deg, #555, #222);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: bold;
+  }
+  .product h2 {
+    font-size: 20px;
+    margin: 15px 0 5px;
+  }
+  .price {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  .btn {
+    background: linear-gradient(45deg, #ff0055, #ffcc00, #00ffcc, #5500ff);
+    background-size: 300% 300%;
+    color: black;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border-radius: 8px;
+    animation: gradientShift 5s infinite;
+  }
+  .btn:hover {
+    transform: scale(1.1);
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+</style>
+</head>
+<body>
+ 
+<header>
+<h1>HR</h1>
+<div class="banner">20% OFF – Limited Time Only!</div>
+</header>
+ 
+<section class="products">
+<div class="product">
+<div class="product-img">HR</div>
+<h2>Baggy Jeans - Black HR Logo</h2>
+<div class="price">$99</div>
+<button class="btn">Add to Cart</button>
+</div>
+<div class="product">
+<div class="product-img">HR</div>
+<h2>Special HR White & Black Tee</h2>
+<div class="price">$59</div>
+<button class="btn">Add to Cart</button>
+</div>
+<div class="product">
+<div class="product-img"></div>
+<h2>Prism Burst Hoodie</h2>
+<div class="price">$89</div>
+<button class="btn">Add to Cart</button>
+</div>
+</section>
+ 
+<script>
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      alert('Item added to cart!');
+    });
+  });
+</script>
+ 
+</body>
+</html>
