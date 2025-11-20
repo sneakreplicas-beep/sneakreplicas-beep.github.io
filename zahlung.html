@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<title>Zur Kasse - Zahlungsmethoden</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+    <style>
+        .payment-method {
+            border: 2px solid #e6e6e6;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .payment-method:hover {
+            border-color: #717fe0;
+            background-color: #f8f9fa;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .payment-method.selected {
+            border-color: #717fe0;
+            background-color: #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .payment-method img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            margin: 20px 0;
+        }
+        .payment-description {
+            color: #666;
+            font-size: 14px;
+            margin-top: 15px;
+            text-align: center;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+        .checkout-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .checkout-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .continue-button {
+            margin-top: 40px;
+        }
+        .mtext-105.cl2 {
+            margin: 15px 0;
+            text-align: center;
+            font-size: 18px;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+        }
+        .col-md-4 {
+            display: flex;
+            flex-direction: column;
+        }
+        .col-md-4 .payment-method {
+            flex: 1;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body class="animsition">
+    <div class="checkout-container">
+        <div class="checkout-title">
+            <h2 class="mtext-109 cl2">Wählen Sie Ihre Zahlungsmethode</h2>
+        </div>
+
+        <div class="row">
+            <!-- PayPal -->
+            <div class="col-md-6">
+                <div class="payment-method" onclick="selectPayment('paypal')">
+                    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" alt="PayPal">
+                    <h4 class="mtext-105 cl2">PayPal</h4>
+                    <p class="payment-description">
+                        Bezahlen Sie sicher mit Ihrem PayPal-Konto oder Ihrer Kreditkarte.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Debit Card -->
+            <div class="col-md-6">
+                <div class="payment-method" onclick="selectPayment('debit')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" style="height: 50px; margin: 10px 0;" alt="Mastercard">
+                    <h4 class="mtext-105 cl2">Debitkarte</h4>
+                    <p class="payment-description">
+                        Bezahlen Sie mit Ihrer Debitkarte (Mastercard, V Pay, etc.).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center continue-button">
+            <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" id="continueButton" disabled>
+                Weiter zur Zahlung
+            </button>
+        </div>
+    </div>
+
+<!--===============================================================================================-->	
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+    <!-- Payment Forms -->
+    <div class="payment-forms" style="max-width: 500px; margin: 30px auto 0; display: none;">
+        <!-- PayPal Form -->
+        <div id="paypalForm" class="payment-form" style="display: none;">
+            <h4 class="mtext-105 cl2 text-center mb-4">PayPal Zahlung</h4>
+            <div class="form-group mb-3">
+                <label>PayPal E-Mail-Adresse</label>
+                <input type="email" class="form-control" placeholder="ihre.email@beispiel.com" required>
+            </div>
+        </div>
+
+        <!-- Debit Card Form -->
+        <div id="debitForm" class="payment-form" style="display: none;">
+            <h4 class="mtext-105 cl2 text-center mb-4">Debitkarten Zahlung</h4>
+            <div class="form-group mb-3">
+                <label>Kartennummer</label>
+                <input type="text" class="form-control" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group mb-3">
+                        <label>Ablaufdatum</label>
+                        <input type="text" class="form-control" placeholder="MM/YY" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group mb-3">
+                        <label>CVC</label>
+                        <input type="text" class="form-control" placeholder="123" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label>Karteninhaber</label>
+                <input type="text" class="form-control" placeholder="Vor- und Nachname" required>
+            </div>
+        </div>
+
+        <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" 
+                id="submitPayment" style="width: 100%; margin-top: 20px; display: none;">
+            Jetzt bezahlen
+        </button>
+    </div>
+
+    <style>
+        .payment-forms input {
+            width: 100%;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+        }
+        .payment-forms label {
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .text-muted {
+            color: #6c757d;
+            font-size: 0.875em;
+        }
+    </style>
+
+    <script>
+        let selectedMethod = null;
+
+        function selectPayment(method) {
+            // Remove selected class from all methods
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Hide all forms
+            document.querySelectorAll('.payment-form').forEach(form => {
+                form.style.display = 'none';
+            });
+
+            // Add selected class to clicked method
+            const selectedElement = document.querySelector(`.payment-method:has(img[alt="${method}"])`);
+            if (selectedElement) {
+                selectedElement.classList.add('selected');
+            }
+
+            // Show selected form
+            const formElement = document.getElementById(method + 'Form');
+            if (formElement) {
+                document.querySelector('.payment-forms').style.display = 'block';
+                formElement.style.display = 'block';
+                document.getElementById('submitPayment').style.display = 'block';
+                document.getElementById('continueButton').style.display = 'none';
+            }
+            
+            // Store selected method
+            selectedMethod = method;
+
+            // Scroll to form
+            formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        document.getElementById('submitPayment').addEventListener('click', function() {
+            const form = document.getElementById(selectedMethod + 'Form');
+            const inputs = form.querySelectorAll('input');
+            let isValid = true;
+
+            // Basic validation
+            inputs.forEach(input => {
+                if (!input.value) {
+                    isValid = false;
+                    input.style.borderColor = '#dc3545';
+                } else {
+                    input.style.borderColor = '#e6e6e6';
+                }
+            });
+
+            if (isValid) {
+                alert('Vielen Dank für Ihre Bestellung! Die Zahlung wird verarbeitet...');
+            } else {
+                alert('Bitte füllen Sie alle erforderlichen Felder aus.');
+            }
+        });
+    </script>
+</body>
+</html>
